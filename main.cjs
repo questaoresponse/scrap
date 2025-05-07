@@ -19,7 +19,7 @@ setInterval(()=>{
 },10000);
 
 const auth = new GoogleAuth({
-  keyFile: './firebase-service-account.json', // caminho para o .json
+  keyFile: __dirname + '/firebase-service-account.json', // caminho para o .json
   scopes: ['https://www.googleapis.com/auth/firebase.messaging'],
 });
 
