@@ -3,6 +3,7 @@ const fs = require("fs");
 const axios = require("axios");
 const { GoogleAuth } = require('google-auth-library');
 const express = require("express");
+const admin = require("firebase-admin");
 const app = express();
 app.get("/getfile",(req,res)=>{
     res.sendFile(__dirname + "/data.json");
@@ -62,25 +63,30 @@ material_nums.map(( material_num, index ) => inversed_material_nums[material_num
 
 async function sendNotification(notification, token){
     try {
-        await axios.post('https://fcm.googleapis.com/v1/projects/scrap-ef4d9/messages:send', notification, {
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${token}`,
-            },
-        });
+        messaging.send(notification);
     } catch (error) {
         console.error('Erro ao enviar notificação:', error.response?.data || error.message);
     }
 };
-async function getAccessToken() {
-  const client = await auth.getClient();
-  const accessToken = await client.getAccessToken();
-  return accessToken.token;
-}
-
-(async () => {
-    const token = await getAccessToken();
-    
+const serviceAccount = {
+    "type": "service_account",
+    "project_id": "scrap-ef4d9",
+    "private_key_id": "45495a6efbea8ea72395992fcbac016d26367a24",
+    "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEuwIBADANBgkqhkiG9w0BAQEFAASCBKUwggShAgEAAoIBAQCeec5Uy+60Ke4k\nIQotyGm79LhyWnUk70vLqfAeThxNv6XDaqaRt73SFhOyoF9Wp1RvDqJqZVuNpLGf\n8vlCretKrvbso3piHgnNg6DkoF5CUxc8upH/u7BZ9t577R/5W8+xM509hq1f6j75\nxD7bRai9XSOLSvWycfBKobBHEfer7uVRdAdLUo9PwgWoH985kUW0xG2tf3G1dh30\n/uOBO7ZFxVrp4qGr9LpsdbDs5n1otbfP7l30srfk+QXiUMDBCne0m3KgAfL4yCVM\nBwQN+XQvFQVM+uDwHAa2xXarkTV6UeYO9SKg37dmFmsu/UWqfMyaGvYWtLxp8Gaf\nIobQzCbxAgMBAAECggEAAsuA0pOy1uBDGsWvEXCj62nc/j351pgWfPXhzhRa68TH\nWSNz4u+xJtfh1WLTsPUMMwCN5794NmQjB9Wir2+JeKHjqU0WzE0y/LoSEoYriL2W\nFCmcMpJDrB/Y+6mKc1I7Cakwium+/Ak8aW5HHNnlKHXQjyqCxni7oAKrAmM0PDGC\nzqBIeJWJMR8sW4t73H1k6MK0R7DWWeK7g7DUb8sdVS4GC9BzN/6zTAzGztzhxqSk\nuT9AsXmUgMt9A5mRNRRmjhN2McXEsWl3lexnaU4fTWf/78QCKmYk8UQPJz51WqZM\nUrNQgdHF/j6doMZ+j67Fu30T6uppGfMHMpTEzkMRywKBgQDPTh86vk0hHiaXOl/d\nEwei+LbrBLZMoVBZ4x1Xb5TH3TfK8RDE3N+eyDrCINlYLNi7FAE8LVUnF0PI6gBM\nYI8MkYpnBa4wlERAjjztI+yOMqT5NOd0gkQoz31fkZgjN3luFqNKiZY3Rtg2xlE1\nnGPCoy2YW7nUlBSGWMnq1Y9vdwKBgQDDs23OKubXXUUFEG3bsRgJP3qoHRON+fTz\nVkfYV+NxUJcvEjezloLKCujBnsCg5A/r43d2ckqiLlB3wThkby/cuicY1w8uLdjC\nglwfLHObVtj0js3bAfK9Edfjk27OUKeZrEhsA3BgL/DlzkUSRIJfu3aru0bMJNOc\nljxlHr1G1wKBgQCGSICKOMMVdMZip3l5Zt5Hfvxd+EtuEABQeYGEJc8mN/HwD39h\nRgHEhMcrAMRJDaPGawrxxBuomrVZ69oNn26KIayZV2CiLyiW+IwWwHJ3Ge8rTk2v\ndsJX/S+lPFZkWYba/OcBXWZkoAtmT8hDBe7JIZJjYudZACLbc6A38eZbuQJ/ImZn\n5tWjvjem6jz5EqUOlJGT/fkedtZ5OEzyVBUe5cxExwFsySSr2NgSEfbV5XIxWkWh\nujBc7iU1/9b3ErB4uVP/i15CTNvCPm6rws8Ng0DA4jw380dkY9e/G0HPOHT1AQ5H\nrLTuC/phXgPkIFHqmOla8tT4nOncSKof86ZznwKBgFu0cBP48R9aNX80Bu2I+ql4\nK4OAiau7Kkc50XfJ5OBQ11Vj98boMJROWWCdQnPIud+l1C8MmE6Kjy/w6c3y7ILX\noWtJtoUHBbiaICpf8jlorz7pFdBVKiuVTSKjJszRvemMfBuGIMPhV7xAzRx1U9Gq\nT3ri9WypYXrCpf0cabR5\n-----END PRIVATE KEY-----\n",
+    "client_email": "firebase-adminsdk-fbsvc@scrap-ef4d9.iam.gserviceaccount.com",
+    "client_id": "108302572805690729080",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-fbsvc%40scrap-ef4d9.iam.gserviceaccount.com",
+    "universe_domain": "googleapis.com"
+}  
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount)
+});
+const messaging = admin.messaging();
+(async () => {    
+    const token = "";
     const browser = await puppeteer.launch({
         headless: true, // Executa com interface gráfica
         defaultViewport: null, // Usa o tamanho da janela padrão
