@@ -19,7 +19,7 @@ setInterval(()=>{
 },10000);
 
 const auth = new GoogleAuth({
-  keyFile: __dirname + '/firebase-service-account.json', // caminho para o .json
+  keyFile: './firebase-service-account.json', // caminho para o .json
   scopes: ['https://www.googleapis.com/auth/firebase.messaging'],
 });
 
@@ -79,9 +79,6 @@ async function getAccessToken() {
 }
 
 (async () => {
-    await fs.readFile("firebase-service-account.json", "UTF-8", (err,content)=>{
-        console.log(content);
-    });
     const token = await getAccessToken();
     
     const browser = await puppeteer.launch({
