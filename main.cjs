@@ -79,6 +79,9 @@ async function getAccessToken() {
 }
 
 (async () => {
+    await fs.readFile("firebase-service-account.json", "UTF-8", (err,content)=>{
+        console.log(content);
+    });
     const token = await getAccessToken();
     
     const browser = await puppeteer.launch({
