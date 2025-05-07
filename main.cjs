@@ -24,7 +24,7 @@ const auth = new GoogleAuth({
   scopes: ['https://www.googleapis.com/auth/firebase.messaging'],
 });
 
-const user_tokens = JSON.stringify(["e9p6KIj1QkimIwlBOzQtm8:APA91bE608K8NUeKnyXfLx08kqGDF654Qt5V62-Q4dgjPpN_Wt4zuVniR_QFy_KfRkK8kHVBGiEZmILHvm3lZO-tmU9ffdn6K7o78Jzz_tbeuwT3y2xgwKE"]);
+const user_tokens = "e9p6KIj1QkimIwlBOzQtm8:APA91bE608K8NUeKnyXfLx08kqGDF654Qt5V62-Q4dgjPpN_Wt4zuVniR_QFy_KfRkK8kHVBGiEZmILHvm3lZO-tmU9ffdn6K7o78Jzz_tbeuwT3y2xgwKE";
 const username = "2025111ISINF0063";
 const password = "Eneagonlosamigos2*";
 
