@@ -13,10 +13,7 @@ app.listen(12345, (err)=>{
 });
 
 setInterval(()=>{
-    try {
-        axios.get("https://scrap-t8xu.onrender.com");
-    } catch (e){
-    }
+    axios.get("https://scrap-t8xu.onrender.com").then(r=>{}).catch(e=>{});
 },10000);
 
 const auth = new GoogleAuth({
