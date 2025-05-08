@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>Register a FCM token</div>
+    <input id="input">
+    <div style="width: fit-content; padding-left: 5px; padding-right: 5px; border: solid 1px black; border-radius: 5px; cursor: pointer;" id="button">send</div>
+    <script>
+const input = document.querySelector("#input");
+document.querySelector("#button").addEventListener("click",(e)=>{
+    fetch("/token",{  
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ token:input.value }), 
+    })
+    .then(res => res.json())
+    .then(data => {})
+    .catch(err => console.error('Erro:', err));
+    input.value = "";
+});
+    </script>
+</body>
+</html>
